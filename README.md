@@ -1,134 +1,134 @@
-# Vanilla OS - Apx Package Manager
+# Vanilla OS - מנהל חבילות Apx
 
-Apx is the default package manager for Vanilla OS. It is a wrapper around multiple package managers to install packages and run commands inside a managed container.
+Apx הוא מנהל החבילות ברירת המחדל של Vanilla OS. הוא עטיפה סביב מנהלי חבילות מרובים להתקנת חבילות והפעלת פקודות בתוך מיכל מנוהל.
 
-## Overview
+## סקירה כללית
 
-**Apx** (/à·peks/) provides a unified interface for managing packages across different Linux distributions. It uses [distrobox](https://github.com/89luca89/distrobox) to create containerized environments where you can install packages without affecting your host system.
+**Apx** (/à·peks/) מספק ממשק אחיד לניהול חבילות על פני הפצות Linux שונות. הוא משתמש ב-[distrobox](https://github.com/89luca89/distrobox) כדי ליצור סביבות בטחונות שבהן ניתן להתקין חבילות ללא השפעה על מערכת המארח שלך.
 
-## Features
+## תכונות
 
-- **Multi-distribution support**: Install packages from different Linux distributions
-- **Container-based**: Packages are installed in isolated containers
-- **Package manager abstraction**: Unified interface for different package managers (apt, dnf, pacman, etc.)
-- **Desktop integration**: Automatic desktop entry export for installed applications
-- **Subsystem management**: Create and manage multiple subsystems with different stacks
+- **תמיכה בהפצות מרובות**: התקנת חבילות מהפצות Linux שונות
+- **מבוסס על קונטיינר**: חבילות מותקנות בקונטיינרים מבודדים
+- **הפשטת מנהל החבילות**: ממשק אחיד עבור מנהלי חבילות שונים (apt, dnf, pacman, וכו')
+- **שילוב שולחן עבודה**: ייצוא אוטומטי של רשומות שולחן עבודה לאפליקציות מותקנות
+- **ניהול תת-מערכות**: יצירה וניהול מרובות תת-מערכות עם מחסניות שונות
 
-## Stack
+## הערימה
 
-- **Language**: Go 1.25.0
+- **שפה**: Go 1.25.0
 - **Framework**: Vanilla OS SDK + CLI builder
-- **UI**: Charmbracelet (bubbletea, lipgloss) for terminal UI
-- **Container**: distrobox integration
+- **ממשק משתמש**: Charmbracelet (bubbletea, lipgloss) לממשק טרמינל
+- **קונטיינר**: שילוב distrobox
 
-## Project Structure
+## מבנה הפרויקט
 
 ```
 cmd/
-  main.go              # Application entry point
-  main_check.go        # String validation variant
-  locales/             # Multi-language support (33+ languages)
+  main.go              # נקודת כניסה של היישום
+  main_check.go        # וריאנט אימות מחרוזות
+  locales/             # תמיכה בשפות מרובות (33+ שפות)
 
 internal/cli/
-  structs.go           # CLI command definitions
-  runtime.go           # Subsystem execution handlers
-  subsystems.go        # Subsystem lifecycle management
-  stacks.go            # Stack operations
-  pkgmanagers.go       # Package manager operations
+  structs.go           # הגדרות פקודות CLI
+  runtime.go           # מטפלי ביצוע תת-מערכות
+  subsystems.go        # ניהול מחזור חיי תת-מערכות
+  stacks.go            # פעולות ערימה
+  pkgmanagers.go       # פעולות מנהל חבילות
 
-core/                  # Core business logic (subsystems, stacks, pkg management)
-config/                # Configuration files
-distrobox/            # distrobox integration scripts
+core/                  # לוגיקה עסקית ליבית (תת-מערכות, ערימות, ניהול pkg)
+config/                # קבצי תצורה
+distrobox/             # סקריפטי שילוב distrobox
 ```
 
-## Building
+## בנייה
 
-### Prerequisites
+### דרישות מוקדמות
 
-- Go 1.25.0 or higher
+- Go 1.25.0 או גבוה יותר
 - make
-- podman or docker
+- podman או docker
 - git
 
-### Build Steps
+### שלבי בנייה
 
 ```bash
-# Clone and enter directory
+# שיבוט וכניסה לתיקייה
 git clone --recursive https://github.com/yourusername/Vanilla-.git
 cd Vanilla-
 
-# Build
+# בנייה
 make build
 
-# Install system-wide
+# התקנה לרמת המערכת
 sudo make install
 sudo make install-manpages
 
-# Install to custom location
+# התקנה למיקום מותאם אישית
 make install PREFIX=$HOME/.local
 make install-manpages PREFIX=$HOME/.local
 ```
 
-## Usage
+## שימוש
 
-### Basic Commands
+### פקודות בסיסיות
 
 ```bash
-# List available subsystems
+# רישום תת-מערכות זמינות
 apx subsystems list
 
-# Create a new subsystem
+# יצירת תת-מערכת חדשה
 apx subsystems new --name=ubuntu-latest
 
-# Enter a subsystem
+# כניסה לתת-מערכת
 apx ubuntu-latest enter
 
-# Install packages in subsystem
+# התקנת חבילות בתת-מערכת
 apx ubuntu-latest install package-name
 
-# Run a command in subsystem
+# הפעלת פקודה בתת-מערכת
 apx ubuntu-latest run command
 
-# List available stacks
+# רישום ערימות זמינות
 apx stacks list
 
-# Manage package managers
+# ניהול מנהלי חבילות
 apx pkgmanagers list
 ```
 
-## Dependencies
+## תלויויות
 
-### Direct Dependencies
-- `github.com/google/uuid` - UUID generation
-- `github.com/vanilla-os/sdk` - Application framework
-- `gopkg.in/yaml.v2` - YAML configuration
+### תלויויות ישירות
+- `github.com/google/uuid` - יצירת UUID
+- `github.com/vanilla-os/sdk` - Framework יישום
+- `gopkg.in/yaml.v2` - תצורת YAML
 
-### UI Dependencies
-- `github.com/charmbracelet/bubbletea` - Terminal UI framework
-- `github.com/charmbracelet/lipgloss` - Terminal styling
+### תלויויות ממשק משתמש
+- `github.com/charmbracelet/bubbletea` - Framework ממשק טרמינל
+- `github.com/charmbracelet/lipgloss` - עיצוב טרמינל
 
-## Documentation
+## תיעוד
 
-For detailed documentation, visit: https://docs.vanillaos.org/docs/en/apx
+לתיעוד מפורט, בקר ב: https://docs.vanillaos.org/docs/en/apx
 
-## Translations
+## תרגומים
 
-Contribute translations via [Weblate](https://hosted.weblate.org/projects/vanilla-os/apx)
+תרום תרגומים דרך [Weblate](https://hosted.weblate.org/projects/vanilla-os/apx)
 
-## License
+## רישיון
 
 GNU General Public License v3.0
 
-## Authors
+## מחברים
 
 - Mirko Brombin <brombin94@gmail.com>
 - Pietro di Caprio <pietro@fabricators.ltd>
-- Vanilla OS Contributors
+- תורמי Vanilla OS
 
-## Contributing
+## תרומה
 
-Contributions are welcome! Please ensure:
+תרומות מתקבלות בברכה! אנא ודא:
 
-1. Dependencies are updated with `go get`, `go mod tidy`, and `go mod vendor`
-2. Code follows Go conventions
-3. Translations are updated in Weblate
+1. תלויויות מעודכנות עם `go get`, `go mod tidy`, ו-`go mod vendor`
+2. הקוד עוקב אחר קונבנציות Go
+3. תרגומים מעודכנים ב-Weblate
