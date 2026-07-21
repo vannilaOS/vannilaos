@@ -140,6 +140,79 @@ ssh user@remote-host "apx subsystems list"
 ssh user@remote-host < /path/to/local/script.sh
 ```
 
+## תמיכה ב-Android
+
+Apx תומך בניהול חבילות וביצוע פקודות דרך מכשירי Android בעזרת Termux וSSH.
+
+### Termux Integration
+
+Termux היא טרמינל מלא עבור Android שתומכת בלימוד Apx בצורה ישירה.
+
+```bash
+# התקנת Termux מ-F-Droid
+# https://f-droid.org/en/packages/com.termux/
+
+# התקנת Apx ב-Termux
+pkg install go git
+git clone https://github.com/yourusername/Vanilla-.git
+cd Vanilla-
+make build
+sudo make install
+```
+
+### גישה ל-Apx דרך Android
+
+```bash
+# חיבור לשרת Apx משרת האחסון שלך
+ssh user@your-server.com
+
+# הרצת פקודות Apx מרחוק
+ssh user@your-server.com "apx subsystems list"
+
+# התקנת חבילות מ-Android
+ssh user@your-server.com "apx ubuntu-latest install python3"
+```
+
+### יישומי Android SSH
+
+שימוש ביישומי SSH פופולריים עבור Android:
+
+- **Termux** - שורת פקודה ישירה וSSH
+- **Termius** - קליינט SSH מקצועי
+- **JuiceSSH** - ממשק SSH משופר
+- **ConnectBot** - קליינט SSH קל משקל
+
+```bash
+# דוגמה: חיבור דרך Termius
+1. פתח Termius
+2. צור חיבור SSH חדש
+3. הזן את פרטי השרת שלך
+4. הפעל: apx subsystems list
+```
+
+### פיתוח אפליקציות Android עם Apx
+
+```bash
+# התקנת כלי פיתוח Android בתת-מערכת
+apx ubuntu-latest install android-sdk android-ndk
+
+# קומפילציה של אפליקציות דרך SSH מ-Android
+ssh user@dev-server.com "apx android-dev compile --project /path/to/project"
+
+# בדיקה של עבודה עם ADB מרחוק
+ssh user@dev-server.com "apx android-dev adb shell"
+```
+
+### סנכרון קבצים דרך Android
+
+```bash
+# העברת קבצים מ-Android לשרת Apx
+scp /sdcard/myproject/* user@server.com:/home/user/projects/
+
+# משיכת תוצאות מ-Apx ל-Android
+scp user@server.com:/build/output/* /sdcard/Downloads/
+```
+
 ## AI ויישומי בינה מלאכותית
 
 Apx משתלב יכולות בינה מלאכותית כדי לשפר את חווית ניהול החבילות וההתקנה.
@@ -216,7 +289,7 @@ apx ai-help --lang=en
 - `github.com/charmbracelet/lipgloss` - עיצוב טרמינל
 
 ### תלויויות AI
-- `github.com/tmc/langchain-go` - שיתוף פעולה LLM
+- `github.com/tmc/langchain-go` - שיתו�� פעולה LLM
 - `github.com/sashabaranov/go-openai` - שיתוף פעולה OpenAI (אופציונלי)
 - `github.com/google/generative-ai-python` - שיתוף פעולה Google AI (אופציונלי)
 
@@ -388,6 +461,79 @@ ssh user@remote-host "apx subsystems list"
 
 # Execute remote script
 ssh user@remote-host < /path/to/local/script.sh
+```
+
+## Android Support
+
+Apx supports package management and command execution from Android devices via Termux and SSH.
+
+### Termux Integration
+
+Termux is a full-featured terminal for Android that supports running Apx directly.
+
+```bash
+# Install Termux from F-Droid
+# https://f-droid.org/en/packages/com.termux/
+
+# Install Apx in Termux
+pkg install go git
+git clone https://github.com/yourusername/Vanilla-.git
+cd Vanilla-
+make build
+sudo make install
+```
+
+### Access Apx from Android
+
+```bash
+# Connect to your Apx server from Android
+ssh user@your-server.com
+
+# Run Apx commands remotely
+ssh user@your-server.com "apx subsystems list"
+
+# Install packages from Android
+ssh user@your-server.com "apx ubuntu-latest install python3"
+```
+
+### Android SSH Applications
+
+Popular SSH applications for Android:
+
+- **Termux** - Direct command line and SSH
+- **Termius** - Professional SSH client
+- **JuiceSSH** - Enhanced SSH interface
+- **ConnectBot** - Lightweight SSH client
+
+```bash
+# Example: Connect via Termius
+1. Open Termius
+2. Create new SSH connection
+3. Enter your server details
+4. Run: apx subsystems list
+```
+
+### Android App Development with Apx
+
+```bash
+# Install Android development tools in a subsystem
+apx ubuntu-latest install android-sdk android-ndk
+
+# Compile applications via SSH from Android
+ssh user@dev-server.com "apx android-dev compile --project /path/to/project"
+
+# Work with ADB remotely
+ssh user@dev-server.com "apx android-dev adb shell"
+```
+
+### File Synchronization via Android
+
+```bash
+# Upload files from Android to Apx server
+scp /sdcard/myproject/* user@server.com:/home/user/projects/
+
+# Download results from Apx to Android
+scp user@server.com:/build/output/* /sdcard/Downloads/
 ```
 
 ## AI and Artificial Intelligence
