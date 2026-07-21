@@ -96,9 +96,53 @@ apx stacks list
 apx pkgmanagers list
 ```
 
+## גישה מרחוק
+
+Apx תומך בגישה מרחוק דרך SSH, מה שמאפשר ניהול חבילות וביצוע פקודות בשרתים וציוד מרוחק.
+
+### הגדרת SSH
+
+```bash
+# חיבור לשרת מרוחק
+ssh user@remote-host
+
+# הרצת פקודות Apx מרחוק
+ssh user@remote-host "apx subsystems list"
+
+# התקנת חבילות דרך SSH
+ssh user@remote-host "apx ubuntu-latest install package-name"
+```
+
+### שימוש ב-iPhone או כלים ניידים
+
+עבור גישה מרחוק מ-iPhone או מכשירים ניידים אחרים, תוכל להשתמש בתוכנות SSH כמו:
+
+- **Termius** - ממשק SSH מלא עם תמיכה בקונטיינרים
+- **iSH** - קונסולה SSH עבור iOS
+- **Prompt** - קליינט SSH מקצועי לiOS
+
+```bash
+# דוגמה: חיבור מ-iPhone דרך Termius
+ssh user@your-server.com
+apx ubuntu-latest enter
+```
+
+### גישה מרחוק מאובטחת
+
+```bash
+# הגדרת מפתח SSH ציבורי לגישה מאובטחת
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote-host
+
+# כניסה ללא סיסמה
+ssh user@remote-host "apx subsystems list"
+
+# הפעלת סקריפט מרחוק
+ssh user@remote-host < /path/to/local/script.sh
+```
+
 ## תלויויות
 
-### תלויויות ישירות
+### תלויויות יש��רות
 - `github.com/google/uuid` - יצירת UUID
 - `github.com/vanilla-os/sdk` - Framework יישום
 - `gopkg.in/yaml.v2` - תצורת YAML
@@ -231,6 +275,50 @@ apx stacks list
 
 # Manage package managers
 apx pkgmanagers list
+```
+
+## Remote Access
+
+Apx supports remote access via SSH, enabling package management and command execution on remote servers and devices.
+
+### SSH Setup
+
+```bash
+# Connect to remote server
+ssh user@remote-host
+
+# Run Apx commands remotely
+ssh user@remote-host "apx subsystems list"
+
+# Install packages via SSH
+ssh user@remote-host "apx ubuntu-latest install package-name"
+```
+
+### Using iPhone and Mobile Devices
+
+For remote access from iPhone or other mobile devices, you can use SSH clients such as:
+
+- **Termius** - Full-featured SSH client with container support
+- **iSH** - SSH console for iOS
+- **Prompt** - Professional SSH client for iOS
+
+```bash
+# Example: Connect from iPhone via Termius
+ssh user@your-server.com
+apx ubuntu-latest enter
+```
+
+### Secure Remote Access
+
+```bash
+# Setup public SSH key for secure access
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote-host
+
+# Login without password
+ssh user@remote-host "apx subsystems list"
+
+# Execute remote script
+ssh user@remote-host < /path/to/local/script.sh
 ```
 
 ## Dependencies
