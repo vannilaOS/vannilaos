@@ -140,9 +140,73 @@ ssh user@remote-host "apx subsystems list"
 ssh user@remote-host < /path/to/local/script.sh
 ```
 
+## AI ויישומי בינה מלאכותית
+
+Apx משתלב יכולות בינה מלאכותית כדי לשפר את חווית ניהול החבילות וההתקנה.
+
+### המלצות חבילות בחכמה
+
+Apx משתמש בלימוד מכונה כדי להמליץ על חבילות רלוונטיות על סמך:
+- רישום התקנה קודם שלך
+- תבניות שימוש נפוצות
+- תלויויות ופרויקטים דומים
+
+```bash
+# קבל המלצות AI עבור חבילה
+apx ai-recommend package-name
+
+# ניתוח חבילה עם AI
+apx ai-analyze ubuntu-latest
+```
+
+### פתרון בעיות בעזרת AI
+
+AI יכול לסייע בטיפול בשגיאות וביצירת סביבה מאופטימלת:
+
+```bash
+# קבל אבחון AI לבעיות התקנה
+apx ai-diagnose
+
+# קבל הצעות AI לפתרון בעיות
+apx ai-troubleshoot error-message
+
+# קבל ייעוץ AI להגדרה אופטימלית
+apx ai-optimize
+```
+
+### הסכמה חכמה של תלויויות
+
+AI מנתח תלויויות בחבילות ומצא:
+- תלויויות חסרות
+- ניגודים בגרסאות
+- חבילות מיותרות
+
+```bash
+# בדוק תלויויות עם AI
+apx ai-check-deps subsystem-name
+
+# קבל הצעות להסרת חבילות מיותרות
+apx ai-cleanup-deps subsystem-name
+
+# קבל דוח AI על בריאות המערכת
+apx ai-health-report
+```
+
+### רצועת זמן נתמכת
+
+AI תומך בעברית, אנגלית ועוד 30+ שפות:
+
+```bash
+# שנה שפה לעברית
+apx --language=he ai-recommend package-name
+
+# קבל סיוע AI בשפתך
+apx ai-help --lang=en
+```
+
 ## תלויויות
 
-### תלויויות יש��רות
+### תלויויות ישירות
 - `github.com/google/uuid` - יצירת UUID
 - `github.com/vanilla-os/sdk` - Framework יישום
 - `gopkg.in/yaml.v2` - תצורת YAML
@@ -150,6 +214,11 @@ ssh user@remote-host < /path/to/local/script.sh
 ### תלויויות ממשק משתמש
 - `github.com/charmbracelet/bubbletea` - Framework ממשק טרמינל
 - `github.com/charmbracelet/lipgloss` - עיצוב טרמינל
+
+### תלויויות AI
+- `github.com/tmc/langchain-go` - שיתוף פעולה LLM
+- `github.com/sashabaranov/go-openai` - שיתוף פעולה OpenAI (אופציונלי)
+- `github.com/google/generative-ai-python` - שיתוף פעולה Google AI (אופציונלי)
 
 ## תיעוד
 
@@ -321,6 +390,70 @@ ssh user@remote-host "apx subsystems list"
 ssh user@remote-host < /path/to/local/script.sh
 ```
 
+## AI and Artificial Intelligence
+
+Apx integrates artificial intelligence capabilities to enhance package management and installation experience.
+
+### Smart Package Recommendations
+
+Apx uses machine learning to recommend relevant packages based on:
+- Your previous installation history
+- Common usage patterns
+- Dependencies and similar projects
+
+```bash
+# Get AI recommendations for a package
+apx ai-recommend package-name
+
+# Analyze package with AI
+apx ai-analyze ubuntu-latest
+```
+
+### AI-Powered Troubleshooting
+
+AI can assist in resolving errors and creating an optimized environment:
+
+```bash
+# Get AI diagnosis for installation issues
+apx ai-diagnose
+
+# Get AI suggestions for troubleshooting
+apx ai-troubleshoot error-message
+
+# Get AI advice for optimal setup
+apx ai-optimize
+```
+
+### Smart Dependency Resolution
+
+AI analyzes package dependencies and finds:
+- Missing dependencies
+- Version conflicts
+- Redundant packages
+
+```bash
+# Check dependencies with AI
+apx ai-check-deps subsystem-name
+
+# Get suggestions to remove redundant packages
+apx ai-cleanup-deps subsystem-name
+
+# Get AI report on system health
+apx ai-health-report
+```
+
+### Multi-Language Support
+
+AI supports Hebrew, English, and 30+ additional languages:
+
+```bash
+# Change language to Hebrew
+apx --language=he ai-recommend package-name
+
+# Get AI help in your language
+apx ai-help --lang=en
+```
+
 ## Dependencies
 
 ### Direct Dependencies
@@ -331,6 +464,11 @@ ssh user@remote-host < /path/to/local/script.sh
 ### UI Dependencies
 - `github.com/charmbracelet/bubbletea` - Terminal UI framework
 - `github.com/charmbracelet/lipgloss` - Terminal styling
+
+### AI Dependencies
+- `github.com/tmc/langchain-go` - LLM integration
+- `github.com/sashabaranov/go-openai` - OpenAI integration (optional)
+- `github.com/google/generative-ai-python` - Google AI integration (optional)
 
 ## Documentation
 
