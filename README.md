@@ -641,3 +641,7 @@ Contributions are welcome! Please ensure:
 1. Dependencies are updated with `go get`, `go mod tidy`, and `go mod vendor`
 2. Code follows Go conventions
 3. Translations are updated in Weblate
+
+## Cross-platform dist folders
+
+Run `make dist` or `./scripts/build-all.sh` to build binaries for mac (darwin), Windows (10/11), and Linux into dist/Mac, dist/Windows-10-11, and dist/Linux respectively. Each folder contains amd64 and arm64 builds. Requires the Go toolchain installed locally; or use CI to build.
