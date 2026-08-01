@@ -274,7 +274,424 @@ AI תומך בעברית, אנגלית ועוד 30+ שפות:
 apx --language=he ai-recommend package-name
 
 # קבל סיוע AI בשפתך
-apx ai-help --lang=en
+apx ai-help --lang=he
+```
+
+## אבטחה והאימות
+
+Apx כוללת מנגנוני אבטחה מקיפים להגנה על המערכת שלך ועל נתוניך.
+
+### ניהול מפתחות API
+
+```bash
+# יצירת מפתח API חדש
+apx api create-key --name="my-api-key" --permissions="read,write"
+
+# רישום כל מפתחות ה-API שלך
+apx api list-keys
+
+# מחיקה של מפתח API
+apx api delete-key api-key-id
+
+# סיבוב מפתח API (עדכון לאבטחה)
+apx api rotate-key api-key-id
+```
+
+### אימות מבוסס-חשבון
+
+```bash
+# התחברות למערכת Apx
+apx auth login --username=your-username
+
+# התחברות עם אימות דו-שלבי
+apx auth login --username=your-username --2fa
+
+# התנתקות
+apx auth logout
+
+# בדיקת סטטוס ההתחברות הנוכחי
+apx auth status
+```
+
+### הנהלת הרשאות
+
+```bash
+# הצגת הרשאות המשתמש הנוכחי
+apx auth permissions list
+
+# הקצאת הרשאות למשתמש אחר
+apx auth permissions grant --user=username --permission=install
+
+# שלילת הרשאות
+apx auth permissions revoke --user=username --permission=delete
+```
+
+### קידוד מעברים עבור SSH
+
+```bash
+# יצירת מפתח SSH חדש
+apx ssh-keygen --key-name="secure-key" --key-type=rsa --bits=4096
+
+# שמירת מפתח שדור ציבורי
+apx ssh-keygen --public-key --key-name="secure-key"
+
+# הסרת מפתח SSH
+apx ssh-keygen --delete --key-name="secure-key"
+```
+
+## תמיכה ב-Windows ו-macOS
+
+Apx תומך בפלטפורמות חוצות-מערכות עם שלי עבודה מלאה על Windows ו-macOS.
+
+### Windows Subsystem for Linux (WSL)
+
+```bash
+# התקנה ב-WSL2
+wsl --install -d Ubuntu
+wsl
+cd Vanilla-
+make build
+sudo make install
+
+# הרצה של Apx דרך Windows
+wsl apx subsystems list
+
+# גישה לקבצים משותפים
+apx ubuntu-latest install /mnt/c/Users/YourName/projects
+```
+
+### macOS - Homebrew
+
+```bash
+# התקנה דרך Homebrew
+brew tap vanilla-os/apx
+brew install apx
+
+# עדכון ל-Homebrew
+brew upgrade apx
+
+# הסרה
+brew uninstall apx
+```
+
+### Docker על Windows/macOS
+
+```bash
+# התקנת Docker Desktop
+# https://www.docker.com/products/docker-desktop
+
+# בנייה של Apx בתוך קונטיינר Docker
+docker build -t apx:latest .
+
+# הרצת Apx
+docker run -it apx:latest apx subsystems list
+
+# שמירת תמונה לשימוש עתידי
+docker save apx:latest > apx-image.tar
+```
+
+### שיתוף פקודות בין פלטפורמות
+
+```bash
+# פקודות זהות ב-Windows, macOS, ו-Linux
+apx subsystems list
+apx subsystems new --name=ubuntu-latest
+apx ubuntu-latest install python3
+
+# סנכרון קבצים חוצה-פלטפורמה
+apx ubuntu-latest sync /local/path /remote/path
+```
+
+## CI/CD Workflows - GitHub Actions
+
+Apx משתלב עם GitHub Actions לאוטומציה מלאה של בדיקות והפצות.
+
+### סרטון GitHub Actions בסיסי
+
+```yaml
+# .github/workflows/ci.yml
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.25.0'
+    
+    - name: Build with Apx
+      run: |
+        make build
+    
+    - name: Run Tests
+      run: |
+        make test
+    
+    - name: Run Linter
+      run: |
+        make lint
+```
+
+### סרטון Release Automation
+
+```yaml
+# .github/workflows/release.yml
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Release
+      run: |
+        make release
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+```
+
+### סרטון בדיקות יומיות
+
+```yaml
+# .github/workflows/nightly-tests.yml
+name: Nightly Tests
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Run Comprehensive Tests
+      run: |
+        make test-all
+    
+    - name: Generate Coverage Report
+      run: |
+        make coverage
+    
+    - name: Upload to Codecov
+      uses: codecov/codecov-action@v3
+```
+
+## תיעוד API
+
+Apx מספקת API ממוקדת לתכנות המערכת באופן קולחותו.
+
+### נקודות קצה REST בסיסיות
+
+```bash
+# רישום כל התת-מערכות
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.apx.local/subsystems
+
+# יצירת תת-מערכת חדשה
+curl -X POST -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"ubuntu-latest"}' \
+  https://api.apx.local/subsystems
+
+# התקנת חבילה בתת-מערכת
+curl -X POST -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"package":"python3"}' \
+  https://api.apx.local/subsystems/ubuntu-latest/install
+
+# מחיקת תת-מערכת
+curl -X DELETE -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.apx.local/subsystems/ubuntu-latest
+```
+
+### דוגמאות JSON
+
+```json
+// רישום תת-מערכות
+GET /api/subsystems
+Response:
+{
+  "subsystems": [
+    {
+      "id": "ubuntu-latest",
+      "name": "ubuntu-latest",
+      "status": "running",
+      "packages": 42
+    }
+  ]
+}
+
+// יצירת תת-מערכת
+POST /api/subsystems
+Body:
+{
+  "name": "fedora-37",
+  "stack": "fedora"
+}
+Response:
+{
+  "success": true,
+  "subsystem_id": "fedora-37"
+}
+```
+
+### GraphQL API
+
+```graphql
+# שאילתה - רישום תת-מערכות
+query {
+  subsystems {
+    id
+    name
+    status
+    packages {
+      name
+      version
+    }
+  }
+}
+
+# מוטציה - יצירת תת-מערכת
+mutation {
+  createSubsystem(input: {
+    name: "alpine-latest"
+    stack: "alpine"
+  }) {
+    success
+    subsystem {
+      id
+      name
+    }
+  }
+}
+```
+
+## קבצי תצורה
+
+### config.yaml - קבוצה ראשית
+
+```yaml
+# ~/.config/apx/config.yaml
+version: 1
+
+# הגדרות כלליות
+general:
+  default_stack: ubuntu
+  auto_update: true
+  check_updates_interval: 604800  # שבועי
+
+# הגדרות אבטחה
+security:
+  require_auth: true
+  enable_2fa: false
+  ssh_key_location: ~/.ssh/apx_key
+  api_key_expiry: 2592000  # 30 ימים
+
+# הגדרות רשתות
+network:
+  enable_remote_access: true
+  remote_port: 8080
+  use_ssl: true
+  ssl_cert_path: /etc/apx/certs/cert.pem
+  ssl_key_path: /etc/apx/certs/key.pem
+
+# הגדרות AI
+ai:
+  enabled: true
+  model: gpt-3.5-turbo
+  api_key_env: APX_AI_KEY
+  language: he
+
+# הגדרות רישום
+logging:
+  level: info
+  file: ~/.apx/apx.log
+  max_size: 10485760  # 10MB
+  max_backups: 5
+```
+
+### .env - משתנים סביבתיים
+
+```bash
+# ~/.apx/.env
+# מפתחות API
+APX_API_KEY=your-secret-api-key
+APX_AI_API_KEY=your-ai-api-key
+
+# מידע מארח מרוחק
+APX_REMOTE_HOST=example.com
+APX_REMOTE_USER=username
+APX_REMOTE_PORT=22
+
+# הגדרות רישום
+APX_LOG_LEVEL=debug
+APX_LOG_FILE=/var/log/apx/apx.log
+
+# הגדרות SSL
+APX_SSL_CERT=/etc/apx/certs/cert.pem
+APX_SSL_KEY=/etc/apx/certs/key.pem
+```
+
+### docker-compose.yml - פריסה
+
+```yaml
+version: '3.8'
+
+services:
+  apx-server:
+    image: apx:latest
+    container_name: apx-server
+    ports:
+      - "8080:8080"
+    environment:
+      - APX_API_KEY=${APX_API_KEY}
+      - APX_AI_API_KEY=${APX_AI_API_KEY}
+      - APX_LOG_LEVEL=info
+    volumes:
+      - apx-data:/var/lib/apx
+      - apx-config:/etc/apx
+    restart: unless-stopped
+
+  apx-redis:
+    image: redis:latest
+    container_name: apx-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+volumes:
+  apx-data:
+  apx-config:
+  redis-data:
 ```
 
 ## תלויויות
@@ -289,13 +706,17 @@ apx ai-help --lang=en
 - `github.com/charmbracelet/lipgloss` - עיצוב טרמינל
 
 ### תלויויות AI
-- `github.com/tmc/langchain-go` - שיתו�� פעולה LLM
+- `github.com/tmc/langchain-go` - שיתוף פעולה LLM
 - `github.com/sashabaranov/go-openai` - שיתוף פעולה OpenAI (אופציונלי)
 - `github.com/google/generative-ai-python` - שיתוף פעולה Google AI (אופציונלי)
 
+### תלויויות אבטחה
+- `github.com/golang-jwt/jwt/v5` - JWT tokens
+- `golang.org/x/crypto` - קריפטוגרפיה
+
 ## תיעוד
 
-לתיעוד מפורט, בקר ב: https://docs.vanillaos.org/docs/en/apx
+לתיעוד מפורט, בקר ב: https://docs.vanillaos.org/docs/he/apx
 
 ## תרגומים
 
@@ -318,326 +739,5 @@ GNU General Public License v3.0
 1. תלויויות מעודכנות עם `go get`, `go mod tidy`, ו-`go mod vendor`
 2. הקוד עוקב אחר קונבנציות Go
 3. תרגומים מעודכנים ב-Weblate
-
----
-
-# Vanilla OS - Apx Package Manager
-
-Apx is the default package manager for Vanilla OS. It is a wrapper around multiple package managers to install packages and run commands inside a managed container.
-
-## Overview
-
-**Apx** (/à·peks/) provides a unified interface for managing packages across different Linux distributions. It uses [distrobox](https://github.com/89luca89/distrobox) to create containerized environments where you can install packages without affecting your host system.
-
-## Features
-
-- **Multi-distribution support**: Install packages from different Linux distributions
-- **Container-based**: Packages are installed in isolated containers
-- **Package manager abstraction**: Unified interface for different package managers (apt, dnf, pacman, etc.)
-- **Desktop integration**: Automatic desktop entry export for installed applications
-- **Subsystem management**: Create and manage multiple subsystems with different stacks
-
-## Stack
-
-- **Language**: Go 1.25.0
-- **Framework**: Vanilla OS SDK + CLI builder
-- **UI**: Charmbracelet (bubbletea, lipgloss) for terminal UI
-- **Container**: distrobox integration
-
-## Project Structure
-
-```
-cmd/
-  main.go              # Application entry point
-  main_check.go        # String validation variant
-  locales/             # Multi-language support (33+ languages)
-
-internal/cli/
-  structs.go           # CLI command definitions
-  runtime.go           # Subsystem execution handlers
-  subsystems.go        # Subsystem lifecycle management
-  stacks.go            # Stack operations
-  pkgmanagers.go       # Package manager operations
-
-core/                  # Core business logic (subsystems, stacks, pkg management)
-config/                # Configuration files
-distrobox/             # distrobox integration scripts
-```
-
-## Building
-
-### Prerequisites
-
-- Go 1.25.0 or higher
-- make
-- podman or docker
-- git
-
-### Build Steps
-
-```bash
-# Clone and enter directory
-git clone --recursive https://github.com/yourusername/Vanilla-.git
-cd Vanilla-
-
-# Build
-make build
-
-# Install system-wide
-sudo make install
-sudo make install-manpages
-
-# Install to custom location
-make install PREFIX=$HOME/.local
-make install-manpages PREFIX=$HOME/.local
-```
-
-## Usage
-
-### Basic Commands
-
-```bash
-# List available subsystems
-apx subsystems list
-
-# Create a new subsystem
-apx subsystems new --name=ubuntu-latest
-
-# Enter a subsystem
-apx ubuntu-latest enter
-
-# Install packages in subsystem
-apx ubuntu-latest install package-name
-
-# Run a command in subsystem
-apx ubuntu-latest run command
-
-# List available stacks
-apx stacks list
-
-# Manage package managers
-apx pkgmanagers list
-```
-
-## Remote Access
-
-Apx supports remote access via SSH, enabling package management and command execution on remote servers and devices.
-
-### SSH Setup
-
-```bash
-# Connect to remote server
-ssh user@remote-host
-
-# Run Apx commands remotely
-ssh user@remote-host "apx subsystems list"
-
-# Install packages via SSH
-ssh user@remote-host "apx ubuntu-latest install package-name"
-```
-
-### Using iPhone and Mobile Devices
-
-For remote access from iPhone or other mobile devices, you can use SSH clients such as:
-
-- **Termius** - Full-featured SSH client with container support
-- **iSH** - SSH console for iOS
-- **Prompt** - Professional SSH client for iOS
-
-```bash
-# Example: Connect from iPhone via Termius
-ssh user@your-server.com
-apx ubuntu-latest enter
-```
-
-### Secure Remote Access
-
-```bash
-# Setup public SSH key for secure access
-ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote-host
-
-# Login without password
-ssh user@remote-host "apx subsystems list"
-
-# Execute remote script
-ssh user@remote-host < /path/to/local/script.sh
-```
-
-## Android Support
-
-Apx supports package management and command execution from Android devices via Termux and SSH.
-
-### Termux Integration
-
-Termux is a full-featured terminal for Android that supports running Apx directly.
-
-```bash
-# Install Termux from F-Droid
-# https://f-droid.org/en/packages/com.termux/
-
-# Install Apx in Termux
-pkg install go git
-git clone https://github.com/yourusername/Vanilla-.git
-cd Vanilla-
-make build
-sudo make install
-```
-
-### Access Apx from Android
-
-```bash
-# Connect to your Apx server from Android
-ssh user@your-server.com
-
-# Run Apx commands remotely
-ssh user@your-server.com "apx subsystems list"
-
-# Install packages from Android
-ssh user@your-server.com "apx ubuntu-latest install python3"
-```
-
-### Android SSH Applications
-
-Popular SSH applications for Android:
-
-- **Termux** - Direct command line and SSH
-- **Termius** - Professional SSH client
-- **JuiceSSH** - Enhanced SSH interface
-- **ConnectBot** - Lightweight SSH client
-
-```bash
-# Example: Connect via Termius
-1. Open Termius
-2. Create new SSH connection
-3. Enter your server details
-4. Run: apx subsystems list
-```
-
-### Android App Development with Apx
-
-```bash
-# Install Android development tools in a subsystem
-apx ubuntu-latest install android-sdk android-ndk
-
-# Compile applications via SSH from Android
-ssh user@dev-server.com "apx android-dev compile --project /path/to/project"
-
-# Work with ADB remotely
-ssh user@dev-server.com "apx android-dev adb shell"
-```
-
-### File Synchronization via Android
-
-```bash
-# Upload files from Android to Apx server
-scp /sdcard/myproject/* user@server.com:/home/user/projects/
-
-# Download results from Apx to Android
-scp user@server.com:/build/output/* /sdcard/Downloads/
-```
-
-## AI and Artificial Intelligence
-
-Apx integrates artificial intelligence capabilities to enhance package management and installation experience.
-
-### Smart Package Recommendations
-
-Apx uses machine learning to recommend relevant packages based on:
-- Your previous installation history
-- Common usage patterns
-- Dependencies and similar projects
-
-```bash
-# Get AI recommendations for a package
-apx ai-recommend package-name
-
-# Analyze package with AI
-apx ai-analyze ubuntu-latest
-```
-
-### AI-Powered Troubleshooting
-
-AI can assist in resolving errors and creating an optimized environment:
-
-```bash
-# Get AI diagnosis for installation issues
-apx ai-diagnose
-
-# Get AI suggestions for troubleshooting
-apx ai-troubleshoot error-message
-
-# Get AI advice for optimal setup
-apx ai-optimize
-```
-
-### Smart Dependency Resolution
-
-AI analyzes package dependencies and finds:
-- Missing dependencies
-- Version conflicts
-- Redundant packages
-
-```bash
-# Check dependencies with AI
-apx ai-check-deps subsystem-name
-
-# Get suggestions to remove redundant packages
-apx ai-cleanup-deps subsystem-name
-
-# Get AI report on system health
-apx ai-health-report
-```
-
-### Multi-Language Support
-
-AI supports Hebrew, English, and 30+ additional languages:
-
-```bash
-# Change language to Hebrew
-apx --language=he ai-recommend package-name
-
-# Get AI help in your language
-apx ai-help --lang=en
-```
-
-## Dependencies
-
-### Direct Dependencies
-- `github.com/google/uuid` - UUID generation
-- `github.com/vanilla-os/sdk` - Application framework
-- `gopkg.in/yaml.v2` - YAML configuration
-
-### UI Dependencies
-- `github.com/charmbracelet/bubbletea` - Terminal UI framework
-- `github.com/charmbracelet/lipgloss` - Terminal styling
-
-### AI Dependencies
-- `github.com/tmc/langchain-go` - LLM integration
-- `github.com/sashabaranov/go-openai` - OpenAI integration (optional)
-- `github.com/google/generative-ai-python` - Google AI integration (optional)
-
-## Documentation
-
-For detailed documentation, visit: https://docs.vanillaos.org/docs/en/apx
-
-## Translations
-
-Contribute translations via [Weblate](https://hosted.weblate.org/projects/vanilla-os/apx)
-
-## License
-
-GNU General Public License v3.0
-
-## Authors
-
-- Mirko Brombin <brombin94@gmail.com>
-- Pietro di Caprio <pietro@fabricators.ltd>
-- Vanilla OS Contributors
-
-## Contributing
-
-Contributions are welcome! Please ensure:
-
-1. Dependencies are updated with `go get`, `go mod tidy`, and `go mod vendor`
-2. Code follows Go conventions
-3. Translations are updated in Weblate
+4. בדיקות עוברות בהצלחה עם `make test`
+5. קוד עוקב אחר הסטנדרטים שנבדקו עם `make lint`
